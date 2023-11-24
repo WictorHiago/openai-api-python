@@ -5,6 +5,33 @@ import openai
 import random
 import string
 
+load_dotenv()
+
+key=os.getenv("API_KEY")
+
+openai.api_key = key
+
+def generate_image(prompt,size):
+    try:
+        response = openai.images.generate(
+            model="dall-e-2",
+            prompt=prompt,
+            size=size,
+            quality="standard",
+            n=1,
+        )
+        
+        return response.data[0].url
+    except Exception as e:
+        return {"error": str(e)}
+
+generated_image1 = generate_image("create modern and technological 3d art, which represents versatility, simplicity, agility and great ideas, use shades of blue, orange, a light fog, realistic, 8k, high definition","512x512")
+generated_image2 = generate_image("create modern and technological 3d art, which represents versatility, simplicity, agility and great ideas, use shades of blue, orange, a light fog, realistic, 8k, high definition","512x512")
+print(generated_image1)
+print(generated_image2)
+
+
+
 id = random.randint(1,9999)
 namefile = f"audio_{id}.mp3"
 
@@ -19,8 +46,7 @@ def newFileName(type,extension):
     return newName
 
 
-# OPENAI
-openai.api_key = key
+
 
 # SPEECH
 def generate_speech(prompt):
@@ -36,7 +62,7 @@ def generate_speech(prompt):
     print("Create successfully: " + namefile)
     return response.stream_to_file(speech_file_path)
 
-generate_speech("Se você deseja gerar duas letras aleatórias em Python, você pode usar o módulo random em combinação com a biblioteca string.")
+# generate_speech("Se você deseja gerar duas letras aleatórias em Python, você pode usar o módulo random em combinação com a biblioteca string.")
 
 # Transcription
 def generate_transcription(file):
